@@ -1,7 +1,12 @@
 import Image from "next/image";
+import AdSection from "@/components/HomePage/AdSection";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]"></div>
+    <div className="bg-background flex w-full flex-col px-4 py-12 md:pb-20">
+      <div className="mx-auto flex min-h-screen max-w-7xl flex-col items-center gap-12 md:gap-20">
+        <AdSection />
+      </div>
+    </div>
   );
 }
