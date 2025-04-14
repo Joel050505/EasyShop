@@ -1,9 +1,9 @@
 "use client";
-import {useState} from "react";
+import { useState } from "react";
 import HamburgerMenu from "../Ui/HamburgerMenu";
-import {BsShop} from "react-icons/bs";
-import {IoPersonCircle} from "react-icons/io5";
-import {motion, AnimatePresence} from "framer-motion";
+import { BsShop } from "react-icons/bs";
+import { IoPersonCircle } from "react-icons/io5";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
@@ -14,17 +14,17 @@ export default function Header() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{x: "-100%", opacity: 0}}
-            animate={{x: 0, opacity: 100}}
-            exit={{x: "-100%", opacity: 0}}
-            transition={{duration: 0.9}}
+            initial={{ x: "-100%", opacity: 0 }}
+            animate={{ x: 0, opacity: 100 }}
+            exit={{ x: "-100%", opacity: 0 }}
+            transition={{ duration: 0.9 }}
             className="absolute top-0 left-0 w-6/12 h-screen bg-white z-50 p-4 pt-6"
           >
             <div className="flex items-center gap-8 pl-10">
               <BsShop size={30} />
               <p className="font-mono text-xl">Easyshop</p>
             </div>
-            <div className="flex flex-col gap-4 font-mono py-2 text-xl pt-8">
+            <div className="flex flex-col gap-4 py-2 text-xl pt-8">
               <a href="">Home</a>
               <a href="">Clothes</a>
               <a href="">About</a>

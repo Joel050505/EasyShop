@@ -5,10 +5,10 @@
   --background: #f3f1f3;
   --foreground: #171717;
 }
-* {
+/* * {
   font-family: "Inter", sans-serif;
   font-weight: 400;
-}
+} */
 
 @theme inline {
   --color-background: var(--background);
