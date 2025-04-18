@@ -1,113 +1,113 @@
 "use client";
+import {useState, useEffect} from "react";
 import useProduct from "@/context/ProductContext";
-import { useState } from "react";
+import ProductsHeader from "./ProductsHeader";
+import ProductCard from "@/components/ui/ProductCard";
+import Loader from "../Ui/Loader";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Products() {
   const [amount, setAmount] = useState(6);
   const [search, setSearch] = useState("");
-  const { products } = useProduct();
+  const [category, setCategory] = useState([]);
+  const {products} = useProduct();
 
+  //////
+  // Initialize cart from localStorage or empty array
+  const [cart, setCart] = useState([]);
+
+  // Load cart from localStorage on component mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  // Function to handle adding/removing items from cart
+  const handleAddToCart = (product) => {
+    // Check if product is already in cart
+    const isInCart = cart.some((item) => item.id === product.id);
+
+    if (isInCart) {
+      // Remove from cart
+      const newCart = cart.filter((item) => item.id !== product.id);
+      setCart(newCart);
+    } else {
+      // Add to cart
+      setCart([...cart, {...product, quantity: 1}]);
+    }
+  };
+  /////
+
+  // Function to toggle category selection
+  const toggleCategory = (value) => {
+    setCategory((prev) =>
+      prev.includes(value)
+        ? prev.filter((cat) => cat !== value)
+        : [...prev, value]
+    );
+  };
+
+  // Filter products based on search and category
   const filteredProducts = products.filter((product) => {
     const nameMatch = product.title
       .toLowerCase()
       .includes(search.toLowerCase());
-
-    return nameMatch;
+    const categoryMatch =
+      category.length === 0 ||
+      category.includes(product.category.toLowerCase());
+    return nameMatch && categoryMatch;
   });
-  // Fix some other day
-  // function filteredProductsByCategory() {
-  //   filteredProducts.filter((product) => {
-  //     const categoryMatch = product.category
-  //       .toLowerCase()
-  //       .includes("men's clothing");
-  //     return categoryMatch;
-  //   });
-  // }
+
+  // Function to load more products, set in 1 seconds and increment by 6
+  const loadMore = () => {
+    setTimeout(() => {
+      setAmount((prev) => prev + 6);
+    }, 1000);
+  };
 
   return (
     <>
       <div className="flex flex-start justify-items-start items-start gap-2">
-        <label className="input md:flex hidden w-64">
-          <svg
-            className="h-[1em] opacity-50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-          >
-            <g
-              strokeLinejoin="round"
-              strokeLinecap="round"
-              strokeWidth="2.5"
-              fill="none"
-              stroke="currentColor"
-            >
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.3-4.3"></path>
-            </g>
-          </svg>
-          <input
-            value={search}
-            type="search"
-            onChange={(e) => setSearch(e.target.value)}
-            required
-            placeholder="Search"
+        <div className="md:flex-row flex flex-col items-center justify-start gap-5">
+          <ProductsHeader
+            search={search}
+            setSearch={setSearch}
+            category={category}
+            toggleCategory={toggleCategory}
           />
-        </label>
-        <button
-          onClick={() => setSearch("mens"[0].toLocaleUpperCase() + "ens")}
-          className="btn btn-outline"
-        >
-          Men
-        </button>
-        <button
-          onClick={() => setSearch("women's"[0].toLocaleUpperCase() + "omen's")}
-          className="btn btn-outline"
-        >
-          Women
-        </button>
+        </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 justify-center p-4">
-        {filteredProducts.length === 0 ? (
-          <div className="text-center text-gray-500 col-span-full">
-            No products found!
-          </div>
-        ) : (
-          filteredProducts.slice(0, amount).map((product) => (
-            <div
-              key={product.id}
-              className="card bg-base-100 w-96 flex justify-between shadow-sm hover:scale-105 transition-transform duration-450 ease-in-out cursor-pointer"
-            >
-              <figure className="p-4 border-b-2 border-gray-50">
-                <img
-                  src={product.image}
-                  alt={product.title}
-                  className="h-48 object-contain"
+      <InfiniteScroll
+        dataLength={filteredProducts.slice(0, amount).length} // Current page of items
+        next={loadMore} // Function to load more, see above
+        hasMore={filteredProducts.length > amount} // Check if there are more products to load
+        loader={<Loader />} // Loader component
+        scrollThreshold={0.9} // Trigger loadMore when 90% of the page is scrolled
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 justify-center p-4">
+          {filteredProducts.length === 0 ? (
+            <span className="loading loading-dots loading-lg"></span>
+          ) : (
+            filteredProducts
+              .slice(0, amount)
+              .map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onAddToCart={handleAddToCart}
+                  cart={cart}
                 />
-              </figure>
-
-              <div className="card-body flex justify-between">
-                <h2 className="card-title mb-12">{product.title}</h2>
-                <div className="card-actions justify-between items-center">
-                  <span className="text-lg font-bold">${product.price}</span>
-                  <button className="btn btn-primary">Buy Now</button>
-                </div>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-
-      <div>
-        {amount < 16 && filteredProducts.length > amount && (
-          <button
-            className="cursor-pointer btn btn-primary w-56 mt-4"
-            onClick={() => {
-              setAmount((prev) => prev + 3);
-            }}
-          >
-            Show more
-          </button>
-        )}
-      </div>
+              ))
+          )}
+        </div>
+      </InfiniteScroll>
     </>
   );
 }

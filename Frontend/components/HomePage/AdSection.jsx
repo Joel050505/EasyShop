@@ -37,7 +37,7 @@ export default function AdSection() {
           animate={{opacity: 1, scale: 1}} // Animerade värden
           exit={{opacity: 1.02, scale: 1.02}} // Avslutande värden
           transition={{duration: 2}} // Animeringsövergång
-          className="w-[1200px] h-82 object-fill shadow-lg"
+          className="w-full h-82 object-fill shadow-lg"
         />
       </a>
 
