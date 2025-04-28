@@ -1,8 +1,8 @@
-import {Geist, Geist_Mono} from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/HomePage/Footer";
 import Header from "@/components/HomePage/Header";
-import {ProductProvider} from "@/context/ProductContext";
+import { ProductProvider } from "@/context/ProductContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,12 +14,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// export const metadata = {
-//   title: "EasyShop",
-//   description: "Your one-stop shop for everything",
-// };
+export const metadata = {
+  title: "EasyShop",
+  description: "Your one-stop shop for everything",
+};
 
-export default function RootLayout({children}) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body

@@ -1,7 +1,8 @@
+"use client";
 import Link from "next/link";
-import {useState} from "react";
+import { useState } from "react";
 
-export default function ProductCard({product, onAddToCart, cart}) {
+export default function ProductCard({ product, onAddToCart, cart }) {
   const [isHovered, setIsHovered] = useState(false);
 
   // Check if product is in cart

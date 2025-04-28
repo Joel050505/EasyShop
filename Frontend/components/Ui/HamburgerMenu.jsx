@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function HamburgerMenu({setOpen, open}) {
+export default function HamburgerMenu({ setOpen, open }) {
   return (
     <div
       className="w-6 h-6 flex flex-col justify-between cursor-pointer z-50"

@@ -1,5 +1,5 @@
 "use client";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import useProduct from "@/context/ProductContext";
 import ProductsHeader from "./ProductsHeader";
 import ProductCard from "@/components/ui/ProductCard";
@@ -10,7 +10,7 @@ export default function Products() {
   const [amount, setAmount] = useState(6);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState([]);
-  const {products} = useProduct();
+  const { products } = useProduct();
 
   //////
   // Initialize cart from localStorage or empty array
@@ -40,7 +40,7 @@ export default function Products() {
       setCart(newCart);
     } else {
       // Add to cart
-      setCart([...cart, {...product, quantity: 1}]);
+      setCart([...cart, { ...product, quantity: 1 }]);
     }
   };
   /////

@@ -1,9 +1,9 @@
 "use client";
-import {createContext, useState, useContext, useEffect} from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 const ProductContext = createContext();
 
-export function ProductProvider({children}) {
+export function ProductProvider({ children }) {
   const [products, setProducts] = useState([]);
 
   async function fetchProducts() {
@@ -17,7 +17,7 @@ export function ProductProvider({children}) {
   }, []);
 
   return (
-    <ProductContext.Provider value={{products, setProducts}}>
+    <ProductContext.Provider value={{ products, setProducts }}>
       {children}
     </ProductContext.Provider>
   );
